@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public int maxStackedItems = 64;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
 
@@ -12,7 +11,7 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = inventorySlots[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < maxStackedItems && itemInSlot.item.stackable)
+            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < item.maxStack)
             {
                 itemInSlot.count++;
                 itemInSlot.RefreshCount();
