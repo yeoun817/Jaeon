@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -20,6 +22,18 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         ChangeSelectedSlot(0);
+    }
+
+    private void Update()
+    {
+        for (int i = 1; i <= 7; i++)
+        {
+            Key key = (Key)System.Enum.Parse(typeof(Key), "Digit" + i);
+            if (Keyboard.current[key].wasPressedThisFrame)
+            {
+                ChangeSelectedSlot(i - 1);
+            }
+        }
     }
 
     public bool AddItem(Item item)
@@ -54,5 +68,24 @@ public class InventoryManager : MonoBehaviour
         GameObject newItemGO = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
+    }
+
+    public Item GetSelectedItem(bool use)
+    {
+        InventorySlot slot = inventorySlots[selectedSlot];
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        
+        if(itemInSlot != null)
+        {
+            Item item = itemInSlot.item;
+            if(use)
+            {
+                itemInSlot.count--;
+                itemInSlot.RefreshCount();
+            }
+            return itemInSlot.item;
+        }
+
+        return null;
     }
 }
