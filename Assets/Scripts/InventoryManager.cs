@@ -5,6 +5,23 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
 
+    int selectedSlot = -1;
+
+    void ChangeSelectedSlot(int newValue)
+    {
+        if (selectedSlot >= 0)
+        {
+            inventorySlots[selectedSlot].DeSelect();
+        }
+        inventorySlots[newValue].Select();
+        selectedSlot = newValue;
+    }
+
+    private void Start()
+    {
+        ChangeSelectedSlot(0);
+    }
+
     public bool AddItem(Item item)
     {
         for (int i = 0; i < inventorySlots.Length; i++)
